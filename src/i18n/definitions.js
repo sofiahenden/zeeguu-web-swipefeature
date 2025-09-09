@@ -270,7 +270,6 @@ let strings = new LocalizedStrings(
 
       //ArticleRouter
       homeTab: "Home",
-      swipeTab: "Swipe",
       classroomTab: "Classroom",
       bookmarkedTab: "Bookmarked",
       saved: "Saves",
