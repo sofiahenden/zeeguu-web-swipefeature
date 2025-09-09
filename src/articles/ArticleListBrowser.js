@@ -1,5 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ArticlePreview from "./ArticlePreview";
+import SortingButtons from "./SortingButtons";
 import SearchField from "./SearchField";
 import * as s from "./ArticleListBrowser.sc";
 import LoadingAnimation from "../components/LoadingAnimation";
@@ -14,8 +15,9 @@ import UnfinishedArticlesList from "./UnfinishedArticleList";
 import { setTitle } from "../assorted/setTitle";
 import strings from "../i18n/definitions";
 import useShadowRef from "../hooks/useShadowRef";
+import { Link } from "react-router-dom";
 import VideoPreview from "../videos/VideoPreview";
-import CustomizeFeed from "./CustomizeFeed";
+import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 
 export default function ArticleListBrowser({ content, searchQuery, searchPublishPriority, searchDifficultyPriority }) {
   let api = useContext(APIContext);
@@ -102,15 +104,6 @@ export default function ArticleListBrowser({ content, searchQuery, searchPublish
     api.logUserActivity(api.CLICKED_VIDEO, null, "", seenListAsString, sourceId);
   };
 
-  const handleArticleHidden = (articleId) => {
-    const updatedList = articlesAndVideosList.filter((item) => item.id !== articleId);
-    setArticlesAndVideosList(updatedList);
-    if (originalList) {
-      const updatedOriginalList = originalList.filter((item) => item.id !== articleId);
-      setOriginalList(updatedOriginalList);
-    }
-  };
-
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, true);
     return () => {
@@ -118,7 +111,6 @@ export default function ArticleListBrowser({ content, searchQuery, searchPublish
     };
     // eslint-disable-next-line
   }, []);
-
 
   useEffect(() => {
     LocalStorage.setDoNotShowRedirectionModal(doNotShowRedirectionModal_UserPreference);
@@ -192,7 +184,27 @@ export default function ArticleListBrowser({ content, searchQuery, searchPublish
               marginBottom: window.innerWidth <= 768 ? "0.5rem" : "1.5rem",
             }}
           >
-            <CustomizeFeed />
+            <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
+              <SettingsRoundedIcon
+                style={{ fontSize: "1.2em", cursor: "pointer" }}
+                title="Customize this page by subscribing to topics, filtering keywords, or adding searches"
+              />
+              <span
+                style={{ fontSize: window.innerWidth <= 768 ? "0.8em" : "0.9em", color: "#666", whiteSpace: "nowrap" }}
+              >
+                <Link className="bold underlined-link" to="/account_settings/interests?fromArticles=1">
+                  Topics
+                </Link>
+                {" • "}
+                <Link className="bold underlined-link" to="/account_settings/excluded_keywords?fromArticles=1">
+                  Excluded Keywords
+                </Link>
+                {" • "}
+                <Link className="bold underlined-link" to="/articles/mySearches">
+                  Saved Searches
+                </Link>
+              </span>
+            </div>
             <s.ShowVideoOnlyButton
               className={isShowVideosOnlyEnabled && "selected"}
               style={{ visibility: !areVideosAvailable && "hidden" }}
@@ -221,11 +233,9 @@ export default function ArticleListBrowser({ content, searchQuery, searchPublish
             <ArticlePreview
               key={each.id}
               article={each}
-              isListView={true}
               hasExtension={isExtensionAvailable}
               doNotShowRedirectionModal_UserPreference={doNotShowRedirectionModal_UserPreference}
               setDoNotShowRedirectionModal_UserPreference={setDoNotShowRedirectionModal_UserPreference}
-              onArticleHidden={handleArticleHidden}
               notifyArticleClick={() => handleArticleClick(each.id, each.source_id, index)}
             />
           ),

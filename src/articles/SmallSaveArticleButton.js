@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { APIContext } from "../contexts/APIContext.js";
 import ActionButton from "../components/ActionButton.js";
 
-export default function SaveArticleButton({
+export default function SmallSaveArticleButton({
   article,
   isArticleSaved,
   setIsArticleSaved,
@@ -19,7 +19,6 @@ export default function SaveArticleButton({
       }
     });
   }
-
   function removeArticle() {
     api.removePersonalCopy(article.id, (data) => {
       if (data === "OK") {

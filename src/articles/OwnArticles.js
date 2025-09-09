@@ -20,15 +20,6 @@ export default function OwnArticles() {
     setOriginalList(newUpdatedList);
   }
 
-  const handleArticleHidden = (articleId) => {
-    const updatedList = articleList.filter((item) => item.id !== articleId);
-    setArticleList(updatedList);
-    if (originalList) {
-      const updatedOriginalList = originalList.filter((item) => item.id !== articleId);
-      setOriginalList(updatedOriginalList);
-    }
-  };
-
   const [handleScroll, isWaitingForNewArticles, noMoreArticlesToShow] = useArticlePagination(
     articleList,
     updateOnPagination,
@@ -63,7 +54,7 @@ export default function OwnArticles() {
     <>
       <SortingButtons articleList={articleList} originalList={originalList} setArticleList={setArticleList} />
       {articleList.map((each) => (
-        <ArticlePreview key={each.id} article={each} dontShowSourceIcon={false} onArticleHidden={handleArticleHidden} />
+        <ArticlePreview key={each.id} article={each} dontShowSourceIcon={false} />
       ))}
       {isWaitingForNewArticles && <LoadingAnimation delay={0}></LoadingAnimation>}
       {noMoreArticlesToShow && articleList.length > 0 && (
