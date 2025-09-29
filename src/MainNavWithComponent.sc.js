@@ -14,7 +14,6 @@ const MainNavWithComponent = styled.div`
 
 const AppContent = styled.section`
   box-sizing: border-box;
-  overflow-y: ${({ $isScrollable }) => ($isScrollable ? "auto" : "hidden")};
   height: 100%;
   width: 100%;
   position: relative;

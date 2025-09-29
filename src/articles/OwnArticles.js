@@ -12,29 +12,13 @@ import useArticlePagination from "../hooks/useArticlePagination";
 
 export default function OwnArticles() {
   const api = useContext(APIContext);
-  const [articleList, setArticleList] = useState([]);
-  const [originalList, setOriginalList] = useState([]);
+  const [articleList, setArticleList] = useState(null);
+  const [originalList, setOriginalList] = useState(null);
 
   function updateOnPagination(newUpdatedList) {
     setArticleList(newUpdatedList);
     setOriginalList(newUpdatedList);
   }
-
-  const handleArticleHidden = (articleId) => {
-    const updatedList = articleList.filter((item) => item.id !== articleId);
-    setArticleList(updatedList);
-    if (originalList) {
-      const updatedOriginalList = originalList.filter((item) => item.id !== articleId);
-      setOriginalList(updatedOriginalList);
-    }
-  };
-
-  const handleArticleSave = (articleId, saved) => {
-    if (!saved) {
-      setArticleList((prev) => (prev ? prev.filter((e) => String(e.id) !== String(articleId)) : prev));
-      setOriginalList((prev) => (prev ? prev.filter((e) => String(e.id) !== String(articleId)) : prev));
-    }
-  };
 
   const [handleScroll, isWaitingForNewArticles, noMoreArticlesToShow] = useArticlePagination(
     articleList,
@@ -43,7 +27,6 @@ export default function OwnArticles() {
     (pageNumber, handleArticleInsertion) => {
       api.getSavedUserArticles(pageNumber, handleArticleInsertion);
     },
-    { skipShouldShow: true },
   );
 
   useEffect(() => {
@@ -71,13 +54,7 @@ export default function OwnArticles() {
     <>
       <SortingButtons articleList={articleList} originalList={originalList} setArticleList={setArticleList} />
       {articleList.map((each) => (
-        <ArticlePreview
-          key={each.id}
-          article={each}
-          dontShowSourceIcon={false}
-          onArticleHidden={handleArticleHidden}
-          onArticleSave={handleArticleSave}
-        />
+        <ArticlePreview key={each.id} article={each} dontShowSourceIcon={false} />
       ))}
       {isWaitingForNewArticles && <LoadingAnimation delay={0}></LoadingAnimation>}
       {noMoreArticlesToShow && articleList.length > 0 && (

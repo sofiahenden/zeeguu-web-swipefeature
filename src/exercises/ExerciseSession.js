@@ -27,6 +27,7 @@ import { ExercisesCounterContext } from "./ExercisesCounterContext";
 import useShadowRef from "../hooks/useShadowRef";
 import DigitalTimer from "../components/DigitalTimer";
 
+import BackArrow from "../pages/Settings/settings_pages_shared/BackArrow";
 import useScreenWidth from "../hooks/useScreenWidth";
 import { NarrowColumn } from "../components/ColumnWidth.sc";
 import useSubSessionTimer from "../hooks/useSubSessionTimer";
@@ -73,7 +74,6 @@ export default function ExerciseSession({ articleID, backButtonAction, toSchedul
   const [totalPracticedBookmarksInSession, setTotalPracticedBookmarksInSession] = useState(0);
   const [exerciseMessageForAPI, setExerciseMessageForAPI] = useState({});
   const [dbExerciseSessionId, setDbExerciseSessionId] = useState();
-  const [isSessionLoading, setIsSessionLoading] = useState(true); // New loading state
   const dbExerciseSessionIdRef = useShadowRef(dbExerciseSessionId);
   const currentIndexRef = useShadowRef(currentIndex);
   const hasKeptExercisingRef = useShadowRef(hasKeptExercising);
@@ -126,7 +126,6 @@ export default function ExerciseSession({ articleID, backButtonAction, toSchedul
   function initializeExercisesForBookmarks(bookmarks) {
     if (bookmarks.length === 0) {
       setIsOutOfWordsToday(true);
-      setIsSessionLoading(false); // No exercises to load
       return;
     }
 
@@ -138,11 +137,10 @@ export default function ExerciseSession({ articleID, backButtonAction, toSchedul
     setCurrentBookmarksToStudy(exerciseSession[0].bookmarks);
     setSelectedExerciseBookmark(exerciseSession[0].bookmarks[0]);
 
-    // we have bookmarks; we can start logging
+    // we have bookmarks; we can start loggign
     api.startLoggingExerciseSessionToDB((newlyCreatedDBSessionID) => {
       let id = JSON.parse(newlyCreatedDBSessionID).id;
       setDbExerciseSessionId(id);
-      setIsSessionLoading(false); // Session is ready
     });
   }
 
@@ -162,7 +160,7 @@ export default function ExerciseSession({ articleID, backButtonAction, toSchedul
       // TODO: Mircea: Consider creating an endpoint that merges these two
       // calls so we only send a single call
       api.getArticleInfo(articleID, (articleInfo) => {
-        api.wordsToStudyForArticle(articleID, true, (bookmarks) => {
+        api.bookmarksToStudyForArticle(articleID, true, (bookmarks) => {
           hideExerciseCounter(); // for article bookmarks we do not show the counter
 
           setArticleTitle(articleInfo.title);
@@ -281,9 +279,7 @@ export default function ExerciseSession({ articleID, backButtonAction, toSchedul
   if (isOutOfWordsToday) {
     return <OutOfWordsMessage goBackAction={backButtonAction} />;
   }
-
-  // Show loading screen until session is created and bookmarks are loaded
-  if (!currentBookmarksToStudy || !fullExerciseProgression || isSessionLoading) {
+  if (!currentBookmarksToStudy || !fullExerciseProgression) {
     return <LoadingAnimation />;
   }
 
@@ -449,21 +445,21 @@ export default function ExerciseSession({ articleID, backButtonAction, toSchedul
       <s.ExercisesColumn>
         <div id="exerciseTopbar">
           <div id="topbarRow">
+            <div style={{ display: "flex", alignItems: "center", marginLeft: "1rem" }}>
+              {isMobile && <BackArrow func={backButtonAction} />}
+            </div>
             {userDetails?.name === "Mircea" && (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  fontSize: "0.8rem",
-                  color: "#666",
-                  fontWeight: "500",
-                }}
-              >
+              <div style={{ 
+                display: "flex", 
+                alignItems: "center", 
+                fontSize: "0.8rem", 
+                color: "#666",
+                fontWeight: "500"
+              }}>
                 {getExerciseTypeName(currentExerciseType)}
               </div>
             )}
-
-            <div style={{ display: "flex", alignItems: "center", marginLeft: "auto" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginRight: "1rem" }}>
               <DigitalTimer
                 activeSessionDuration={activeSessionDuration}
                 clockActive={clockActive}
@@ -478,7 +474,6 @@ export default function ExerciseSession({ articleID, backButtonAction, toSchedul
           <ExerciseSessionProgressBar
             index={isCorrect ? currentIndex + 1 : currentIndex}
             total={fullExerciseProgression.length}
-            style={{ display: "none" }}
           />
         </div>
         <s.ExForm>

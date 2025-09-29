@@ -51,14 +51,7 @@ Zeeguu_API.prototype.bookmarksForArticle = function (articleId, callback) {
   );
 };
 
-/**
- * Get words to study for a specific article
- *
- * @param {number} articleId - The ID of the article
- * @param {boolean} isWithTokens - Whether to include tokenization data
- * @param {Function} callback - Function to call with the results
- */
-Zeeguu_API.prototype.wordsToStudyForArticle = function (
+Zeeguu_API.prototype.bookmarksToStudyForArticle = function (
   articleId,
   isWithTokens,
   callback,
@@ -66,7 +59,7 @@ Zeeguu_API.prototype.wordsToStudyForArticle = function (
   let payload = {
     with_tokens: isWithTokens,
   };
-  let endpoint = `words_to_study_for_article/${articleId}`;
+  let endpoint = `bookmarks_to_study_for_article/${articleId}`;
   if (isWithTokens)
         this._post(
           endpoint,

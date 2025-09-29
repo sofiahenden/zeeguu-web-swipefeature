@@ -65,7 +65,6 @@ export default function MainNavWithComponent(props) {
             $currentPath={path}
             $screenWidth={screenWidth}
             id="scrollHolder"
-            $isScrollable={!path.includes("swiper")}
           >
             {appContent}
           </s.AppContent>

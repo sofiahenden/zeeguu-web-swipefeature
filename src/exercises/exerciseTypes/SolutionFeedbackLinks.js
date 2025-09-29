@@ -2,7 +2,8 @@ import strings from "../../i18n/definitions";
 import * as s from "./Exercise.sc";
 import { useEffect, useState } from "react";
 import FeedbackModal from "../../components/FeedbackModal";
-import { FEEDBACK_CODES_NAME, FEEDBACK_OPTIONS } from "../../components/FeedbackConstants";
+import { FEEDBACK_OPTIONS, FEEDBACK_CODES_NAME } from "../../components/FeedbackConstants";
+import RemoveBookmarkModal from "../removeBookmark/RemoveBookmarkModal";
 import { toast } from "react-toastify";
 import useScreenWidth from "../../hooks/useScreenWidth";
 import DisableAudioSession from "./DisableAudioSession";
@@ -35,12 +36,7 @@ export default function SolutionFeedbackLinks({
     <>
       <s.CenteredWordRow
         className={!isExerciseOver ? "margin-top-auto" : ""}
-        style={{
-          flexDirection: isMobile ? "column" : "row",
-          marginTop: !isExerciseOver ? "1rem" : "0",
-          gap: "1rem",
-          marginBottom: isMobile ? "2rem" : "1rem",
-        }}
+        style={{ flexDirection: isMobile ? "column" : "row", marginTop: !isExerciseOver ? "1rem" : "0", gap: "1rem" }}
       >
         <FeedbackModal
           prefixMsg={prefixMsg}
@@ -73,7 +69,7 @@ export default function SolutionFeedbackLinks({
       </s.CenteredWordRow>
 
       {isExerciseOver && (
-        <s.CenteredWordRow style={{ gap: "1em", flexWrap: "wrap", marginBottom: isMobile ? "2rem" : "1rem" }}>
+        <s.CenteredWordRow style={{ gap: "1em", flexWrap: "wrap" }}>
           <s.StyledGreyButton
             className="styledGreyButton"
             onClick={() => {
