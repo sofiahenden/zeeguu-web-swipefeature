@@ -48,8 +48,7 @@ export default function MainAppRouter({ hasExtension, handleSuccessfulLogIn }) {
       <PrivateRoute path="/select_interests" hasExtension={hasExtension} component={SelectInterests} />
 
       <PrivateRoute path="/exclude_words" hasExtension={hasExtension} component={ExcludeWords} />
-
-      <PrivateRouteWithMainNav path="/articles" component={ArticlesRouter} />
+      <PrivateRouteWithMainNav path="/articles/:view?" component={ArticlesRouter} />
       <PrivateRoute path="/watch/video" component={VideoPlayer} />
       <PrivateRouteWithMainNav path="/exercises" component={ExercisesRouter} />
       <PrivateRouteWithMainNav path="/daily-audio" component={DailyAudioRouter} />
@@ -67,8 +66,14 @@ export default function MainAppRouter({ hasExtension, handleSuccessfulLogIn }) {
       />
       <PrivateRouteWithMainNav path="/exercise/:exerciseType/:bookmarkId" component={IndividualExercise} />
       <PrivateRouteWithMainNav path="/exercise-test/:exerciseType/:bookmarkId" component={IndividualExercise} />
-      <PrivateRouteWithMainNav path="/exercise-test/:exerciseType/:word/:translation/:context/:tokenized" component={IndividualExercise} />
-      <PrivateRouteWithMainNav path="/exercise-test/:exerciseType/:word/:translation/:context" component={IndividualExercise} />
+      <PrivateRouteWithMainNav
+        path="/exercise-test/:exerciseType/:word/:translation/:context/:tokenized"
+        component={IndividualExercise}
+      />
+      <PrivateRouteWithMainNav
+        path="/exercise-test/:exerciseType/:word/:translation/:context"
+        component={IndividualExercise}
+      />
       <PrivateRouteWithMainNav path="/exercise-test" component={IndividualExercise} />
       <Route path="*" component={NotFound} />
     </Switch>
