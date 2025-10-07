@@ -107,6 +107,8 @@ export default function ArticleSwipeBrowser({
           article={currentArticle}
           isListView={false}
           notifyArticleClick={handleOpen}
+          onArticleHidden={handleDismiss}
+          onArticleSave={handleSave}
         />
 
         <ArticleSwipeControl onOpen={handleOpen} onDismiss={handleDismiss} onSave={handleSave} />
