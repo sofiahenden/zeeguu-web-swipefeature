@@ -17,9 +17,7 @@ export default function ArticlePreviewSwipe({
     const dragStartX = useRef(0);
     const dragStartY = useRef(0);
     const isHorizontalDrag = useRef(false);
-
-    const THRESHOLD = 120; // minimum horizontal distance to count as swipe
-
+    
     const handleDragStart = (e, info) => {
         dragStartX.current = info.point.x;
         dragStartY.current = info.point.y;
