@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { orange600, saveGreen, dismissRed, white } from "../colors";
 
-// already exists… unchanged
 export const Bar = styled.div`
   display: flex;
   align-items: center;
