@@ -64,7 +64,21 @@ export default function MainAppRouter({ hasExtension, handleSuccessfulLogIn }) {
       <PrivateRoute path="/select_interests" hasExtension={hasExtension} component={SelectInterests} />
 
       <PrivateRoute path="/exclude_words" hasExtension={hasExtension} component={ExcludeWords} />
-      <PrivateRouteWithMainNav path="/articles/:view?" component={ArticlesRouter} />
+      {/* <PrivateRouteWithMainNav path="/articles/:view?" component={ArticlesRouter} /> */}
+      <PrivateRouteWithMainNav
+        exact
+        path={[
+          "/articles",
+          "/articles/swiper",
+          "/articles/bookmarked",
+          "/articles/classroom",
+          "/articles/ownTexts",
+          "/articles/forYou",
+          "/articles/history",
+          "/articles/mySearches",
+        ]}
+        component={ArticlesRouter}
+      />
       <PrivateRoute path="/watch/video" component={VideoPlayer} />
       <PrivateRouteWithMainNav path="/exercises" component={ExercisesRouter} />
       <PrivateRouteWithMainNav path="/daily-audio" component={DailyAudioRouter} />

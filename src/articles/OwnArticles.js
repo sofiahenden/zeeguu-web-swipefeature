@@ -30,10 +30,10 @@ export default function OwnArticles() {
   };
 
   const handleArticleSave = (articleId, saved) => {
-    if (!saved) {
+    // if (!saved) {
       setArticleList((prev) => (prev ? prev.filter((e) => String(e.id) !== String(articleId)) : prev));
       setOriginalList((prev) => (prev ? prev.filter((e) => String(e.id) !== String(articleId)) : prev));
-    }
+    // }
   };
 
   const [handleScroll, isWaitingForNewArticles, noMoreArticlesToShow] = useArticlePagination(
