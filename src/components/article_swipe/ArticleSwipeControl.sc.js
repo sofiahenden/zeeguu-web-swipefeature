@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { orange600, saveGreen, dismissRed } from "../colors";
+import { orange600, saveGreen, dismissRed, white } from "../colors";
 
+// already exists… unchanged
 export const Bar = styled.div`
   display: flex;
   align-items: center;
@@ -21,7 +22,6 @@ export const BaseButton = styled.button`
   &:hover {
     filter: brightness(0.95);
   }
-
   &:active {
     transform: translateY(1px) scale(0.95);
   }
@@ -67,14 +67,9 @@ export const SaveButton = styled(BaseButton)`
   .heart-filled { opacity: 0; }
   .heart-outline { opacity: 1; }
 
-  /* Hover only for desktop */
   @media (hover: hover) and (pointer: fine) {
-      &:hover .heart-filled {
-          opacity: 1;
-      }
-      &:hover .heart-outline {
-          opacity: 0;
-      }
+      &:hover .heart-filled { opacity: 1; }
+      &:hover .heart-outline { opacity: 0; }
   }
 
   &.saved .heart-filled { opacity: 1; }
@@ -88,4 +83,28 @@ export const ButtonInner = styled.div`
   display: grid;
   place-items: center;
   position: relative;
+`;
+
+export const ReadWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const ReadLabel = styled.span`
+  color: ${white};
+  font-size: 12px;
+  font-weight: 600;
+`;
+
+export const IconStyles = styled.div`
+  .icon-large {
+    color: ${white};
+    font-size: 30px;
+  }
+  
+  .icon-medium {
+    color: ${white};
+    font-size: 26px;
+  }
 `;
