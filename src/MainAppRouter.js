@@ -80,33 +80,33 @@ export default function MainAppRouter({ hasExtension, handleSuccessfulLogIn }) {
         ]}
         component={ArticlesRouter}
       />
-      <PrivateRoute path="/watch/video" component={VideoPlayer} />
-      <PrivateRouteWithMainNav path="/exercises" component={ExercisesRouter} />
-      <PrivateRouteWithMainNav path="/daily-audio" component={DailyAudioRouter} />
-      <PrivateRouteWithMainNav path="/words" component={WordsRouter} />
-      <PrivateRouteWithMainNav path="/history" component={ReadingHistory} />
-      <PrivateRouteWithMainNav path="/account_settings" component={SettingsRouter} />
-      <PrivateRouteWithMainNav path="/teacher" component={TeacherRouter} />
-      <PrivateRouteWithMainNav path="/read/article" component={ArticleReader} />
-      <PrivateRouteWithMainNav path="/user_dashboard" component={UserDashboard} />
-      <PrivateRouteWithMainNav path="/search" component={ArticlesRouter} />
+      <PrivateRoute exact path="/watch/video" component={VideoPlayer} />
+      <PrivateRouteWithMainNav exact path="/exercises" component={ExercisesRouter} />
+      <PrivateRouteWithMainNav exact path="/daily-audio" component={DailyAudioRouter} />
+      <PrivateRouteWithMainNav exact path="/words" component={WordsRouter} />
+      <PrivateRouteWithMainNav exact path="/history" component={ReadingHistory} />
+      <PrivateRouteWithMainNav exact path="/account_settings" component={SettingsRouter} />
+      <PrivateRouteWithMainNav exact path="/teacher" component={TeacherRouter} />
+      <PrivateRouteWithMainNav exact path="/read/article" component={ArticleReader} />
+      <PrivateRouteWithMainNav exact path="/user_dashboard" component={UserDashboard} />
+      <PrivateRouteWithMainNav exact path="/search" component={ArticlesRouter} />
       <PrivateRouteWithMainNav
-        path="/articleWordReview/:articleID"
+        exact path="/articleWordReview/:articleID"
         component={ExercisesForArticle}
         source={WEB_READER}
       />
-      <PrivateRouteWithMainNav path="/exercise/:exerciseType/:bookmarkId" component={IndividualExercise} />
-      <PrivateRouteWithMainNav path="/exercise-test/:exerciseType/:bookmarkId" component={IndividualExercise} />
+      <PrivateRouteWithMainNav exact path="/exercise/:exerciseType/:bookmarkId" component={IndividualExercise} />
+      <PrivateRouteWithMainNav exact path="/exercise-test/:exerciseType/:bookmarkId" component={IndividualExercise} />
       <PrivateRouteWithMainNav
-        path="/exercise-test/:exerciseType/:word/:translation/:context/:tokenized"
+        exact path="/exercise-test/:exerciseType/:word/:translation/:context/:tokenized"
         component={IndividualExercise}
       />
       <PrivateRouteWithMainNav
-        path="/exercise-test/:exerciseType/:word/:translation/:context"
+        exact path="/exercise-test/:exerciseType/:word/:translation/:context"
         component={IndividualExercise}
       />
       <PrivateRouteWithMainNav path="/exercise-test" component={IndividualExercise} />
-      <Route path="/keyboard-test" component={KeyboardTest} />
+      <Route exact path="/keyboard-test" component={KeyboardTest} />
       <Route path="*" component={NotFound} />
     </Switch>
   );
