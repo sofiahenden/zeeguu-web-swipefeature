@@ -24,6 +24,7 @@ export default function ArticleListBrowser({
   noMore,
   resetPagination,
   // interactions
+  onArticleOpen,
   onArticleHide,
   onArticleSave,
   // downstream UI needs
@@ -42,8 +43,6 @@ export default function ArticleListBrowser({
   const [originalList, setOriginalList] = useState(null);
   const [areVideosAvailable, setAreVideosAvailable] = useState(false);
   const [isShowVideosOnlyEnabled, setIsShowVideosOnlyEnabled] = useState(false);
-  // Ref is needed since it's called in the updateOnPagination function. This function
-  // could have stale values if using the state constant.
   const isShowVideosOnlyEnabledRef = useShadowRef(isShowVideosOnlyEnabled);
 
   // Keep latest priorities for search
@@ -65,9 +64,7 @@ export default function ArticleListBrowser({
   };
 
   const handleArticleOpen = (articleId, sourceId, index) => {
-      const seenList = articles.slice(0, index).map((each) => each.source_id);
-      const seenListAsString = JSON.stringify(seenList, null, 0);
-     api.logUserActivity(api.CLICKED_ARTICLE, articleId, "", seenListAsString, sourceId);
+    onArticleOpen?.(articleId, sourceId, index);
   };
 
   const handleArticleHide = (articleId) => {

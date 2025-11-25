@@ -35,10 +35,13 @@ export default function ArticlePreview({
   const [isHidden, setIsHidden] = useState(article.hidden || false);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
 
-    useEffect(() => {
+  useEffect(() => {
+    let isMounted = true;
+
     if ((article.summary || article.title) && !isTokenizing && !interactiveSummary && !interactiveTitle) {
       setIsTokenizing(true);
       api.getArticleSummaryInfo(article.id, (summaryData) => {
+        if (!isMounted) return;
 
         // Create interactive summary
         if (summaryData.tokenized_summary) {
@@ -74,6 +77,9 @@ export default function ArticlePreview({
       });
           setIsTokenizing(false);
       }
+    return () => {
+      isMounted = false;
+    };
   }, [
     article.summary,
     article.title,

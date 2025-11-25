@@ -26,6 +26,7 @@ import { WEB_READER } from "./reader/ArticleReader";
 import VideoPlayer from "./videos/VideoPlayer";
 import DailyAudioRouter from "./dailyAudio/_DailyAudioRouter";
 import IndividualExercise from "./pages/IndividualExercise";
+import Swiper from "./swiper/Swiper";
 import KeyboardTest from "./pages/KeyboardTest";
 
 // Helper to detect if we're in a Capacitor app

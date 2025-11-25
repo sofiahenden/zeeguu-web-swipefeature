@@ -17,16 +17,14 @@ export default function ArticleBrowser({
   const [articlesAndVideosList, setArticlesAndVideosList] = useState([]);
   const [isExtensionAvailable] = useExtensionCommunication();
 
-    // The ternary operator below fix the problem with the getOpenArticleExternallyWithoutModal()
-    // getter that was outputting undefined string values when they should be false
-    // This occurs before the user selects their own preferences.
-    // Additionally, the conditional statement needed to be tightened up due to JS's unstable behavior, which resulted
-    // in bool values changing on its own on refresh without any other external trigger or preferences change.
-    // A '=== "true"' clause has been added to the getters to achieve predictable and desired bool values.
+  // modal pref
   const doNotShowRedirectionModal_LocalStorage = LocalStorage.getDoNotShowRedirectionModal() === "true";
   const [doNotShowRedirectionModal_UserPreference, setDoNotShowRedirectionModal_UserPreference] = useState(
     doNotShowRedirectionModal_LocalStorage,
   );
+
+  // exclude hidden and saved article from the homepage
+  const shouldShow = (a) => ![true, "true"].includes(a?.hidden) && ![true, "true"].includes(a?.has_personal_copy);
 
   // pagination helpers
   function getNewArticlesForPage(pageNumber, handleArticleInsertion) {
@@ -34,7 +32,7 @@ export default function ArticleBrowser({
   }
 
   function updateOnPagination(newUpdatedList) {
-    const filtered = (newUpdatedList || []);
+    const filtered = (newUpdatedList || []).filter(shouldShow);
     setArticlesAndVideosList(filtered);
   }
 
@@ -44,7 +42,14 @@ export default function ArticleBrowser({
       updateOnPagination,
       strings.titleHome,
       getNewArticlesForPage,
+      shouldShow,
     );
+
+  const handleArticleOpen = (articleId, sourceId, index) => {
+    const seenList = articlesAndVideosList.slice(0, index).map((each) => each.source_id);
+    const seenListAsString = JSON.stringify(seenList, null, 0);
+    api.logUserActivity(api.CLICKED_ARTICLE, articleId, "", seenListAsString, sourceId);
+  };
 
   const handleArticleHide = (articleId) => {
     const updatedList = articlesAndVideosList.filter((item) => item.id !== articleId);
@@ -57,7 +62,7 @@ export default function ArticleBrowser({
   const handleArticleSave = (articleId, saved) => {
     setArticlesAndVideosList(
       (prev) =>
-        prev?.map((e) => (e.id === articleId ? { ...e, has_personal_copy: saved } : e)) ?? prev,
+        prev?.map((e) => (e.id === articleId ? { ...e, has_personal_copy: saved } : e)).filter(shouldShow) ?? prev,
     );
   };
 
@@ -88,6 +93,7 @@ export default function ArticleBrowser({
   return isSwipeView ? (
     <ArticleSwipeBrowser
       articles={articlesAndVideosList}
+      onArticleOpen={handleArticleOpen}
       onArticleHide={handleArticleHide}
       onArticleSave={handleArticleSave}
       loadNextPage={loadNextPage}
@@ -104,6 +110,7 @@ export default function ArticleBrowser({
       isWaiting={isWaitingForNewArticles}
       noMore={noMoreArticlesToShow}
       resetPagination={resetPagination}
+      onArticleOpen={handleArticleOpen}
       onArticleHide={handleArticleHide}
       onArticleSave={handleArticleSave}
       hasExtension={isExtensionAvailable}

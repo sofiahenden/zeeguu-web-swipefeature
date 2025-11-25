@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as s from "./ArticleSwipeBrowser.sc";
 import LoadingAnimation from "../components/LoadingAnimation";
 import ArticlePreview from "./ArticlePreview";
@@ -9,10 +9,10 @@ import SaveArticleButton from "./SaveArticleButton";
 import { isMobile } from "../utils/misc/browserDetection";
 import Feature from "../features/Feature";
 import RedirectionNotificationModal from "../components/redirect_notification/RedirectionNotificationModal";
-import {APIContext} from "../contexts/APIContext";
 
 export default function ArticleSwipeBrowser({
     articles,
+    onArticleOpen,
     onArticleHide,
     onArticleSave,
     loadNextPage,
@@ -25,10 +25,8 @@ export default function ArticleSwipeBrowser({
   const currentArticle = articles?.[currentArticleIndex];
   const [isArticleSaved, setIsArticleSaved] = useState(!!currentArticle?.has_personal_copy);
   const hiddenSaveRef = useRef(null);
-  const api = useContext(APIContext);
 
-
-    // these will be removed when we decided on a clear structure
+  // these will be removed when we decided on a clear structure
   const [isRedirectionModalOpen, setIsRedirectionModalOpen] = useState(false);
 
   useEffect(() => {
@@ -61,7 +59,7 @@ export default function ArticleSwipeBrowser({
   if (!currentArticle) return <LoadingAnimation />;
 
   const handleOpen = () => {
-    api.logUserActivity(api.CLICKED_ARTICLE, currentArticle.id, undefined, currentArticle.source_id);
+    onArticleOpen?.(currentArticle.id, currentArticle.source_id, currentArticleIndex);
 
     const shouldOpenInZeeguu =
       currentArticle.video ||
