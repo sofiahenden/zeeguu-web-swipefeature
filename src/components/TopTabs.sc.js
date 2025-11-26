@@ -51,7 +51,7 @@ const TopTabs = styled.div`
   /*******MEDIA QUERIES **********/
   @media screen and (max-width: 768px) {
     .headmenuTab {
-      font-size: 0.8em;
+      font-size: 1.0em;
       line-height: 7ex;
     }
 
